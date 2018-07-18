@@ -26,7 +26,6 @@ public class RecipesViewModel extends AndroidViewModel {
         return recipes;
     }
 
-
     private class RecipeQueryTask extends AsyncTask<URL, Void, String> {
 
         @Override

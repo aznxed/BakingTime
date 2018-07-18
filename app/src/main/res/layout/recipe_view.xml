@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     card_view:cardCornerRadius="4dp"
     card_view:cardElevation="4dp"
     card_view:cardPreventCornerOverlap="true"
     card_view:cardUseCompatPadding="true">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/recipe_image"
             android:layout_width="match_parent"
@@ -21,15 +21,14 @@
             android:adjustViewBounds="true"
             android:contentDescription="Recipe Image"/>
 
-        <TextView
+        <com.alespero.expandablecardview.ExpandableCardView
             android:id="@+id/recipe_name"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:textAlignment="center"
-            android:layout_margin="10dp"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
-    </RelativeLayout>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:title="Ingredients"
+            app:inner_view="@layout/inner_view"
+            app:expandOnClick="true"/>
+    </LinearLayout>
+
 
 </android.support.v7.widget.CardView>

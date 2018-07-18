@@ -1,6 +1,9 @@
 package com.example.android.bakingtime;
 
-public class RecipeObject {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class RecipeObject{
     private String id;
     private String name;
     private Ingredient[] ingredients;
@@ -29,7 +32,6 @@ public class RecipeObject {
         return steps;
     }
 
-
     public static class Ingredient {
         private String quantity;
         private String measure;
@@ -54,12 +56,30 @@ public class RecipeObject {
         }
     }
 
-    public static class Step {
+    public static class Step implements Parcelable{
         private String id;
         private String shortDescription;
         private String description;
         private String videoURL;
         private String thumbnailURL;
+
+        public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+            public Step createFromParcel(Parcel in) {
+                return new Step(in);
+            }
+
+            public Step[] newArray(int size) {
+                return new Step[size];
+            }
+        };
+
+        public Step(Parcel in){
+            this.id = in.readString();
+            this.shortDescription = in.readString();
+            this.description = in.readString();
+            this.videoURL = in.readString();
+            this.thumbnailURL = in.readString();
+        }
 
         public Step(String id, String shortDescription, String description, String videoURL, String thumbnailURL){
             this.id = id;
@@ -87,6 +107,20 @@ public class RecipeObject {
 
         public String getThumbnailURL() {
             return thumbnailURL;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(this.id);
+            parcel.writeString(this.shortDescription);
+            parcel.writeString(this.description);
+            parcel.writeString(this.videoURL);
+            parcel.writeString(this.thumbnailURL);
         }
     }
 }
