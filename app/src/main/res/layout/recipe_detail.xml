@@ -9,8 +9,8 @@
         android:id="@+id/main_media_frame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:background="#000000">
+        android:layout_weight="1">
+
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
@@ -29,12 +29,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5">
+        android:layout_weight="1">
         <TextView
+
             android:id="@+id/recipe_detail"
             style="?android:attr/textAppearanceLarge"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:padding="16dp" />
     </ScrollView>
 
