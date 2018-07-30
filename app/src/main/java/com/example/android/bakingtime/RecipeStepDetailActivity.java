@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
+import static android.support.v4.app.NavUtils.navigateUpFromSameTask;
+
 /**
  * An activity representing a single Recipe detail screen. This
  * activity is only used on narrow width devices. On tablet-size devices,
@@ -45,9 +47,10 @@ public class RecipeStepDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            //arguments.putString(RecipeStepDetailFragment.ARG_ITEM_ID, getIntent().getStringExtra(RecipeStepDetailFragment.ARG_ITEM_ID));
-            RecipeObject.Step step = (RecipeObject.Step)getIntent().getExtras().get(RecipeStepDetailFragment.ARG_ITEM_ID);
-            Log.d("Test", Boolean.toString(step == null));
+            if(getIntent().hasExtra(RecipeStepDetailFragment.ARG_ITEM_ID)){
+                RecipeObject.Step step = (RecipeObject.Step)getIntent().getExtras().get(RecipeStepDetailFragment.ARG_ITEM_ID);
+                arguments.putParcelable(RecipeStepDetailFragment.ARG_ITEM_ID, step);
+            }
 
             RecipeStepDetailFragment fragment = new RecipeStepDetailFragment();
             fragment.setArguments(arguments);
@@ -56,4 +59,24 @@ public class RecipeStepDetailActivity extends AppCompatActivity {
                     .commit();
         }
     }
+
+    /*
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            // This ID represents the Home or Up button. In the case of this
+            // activity, the Up button is shown. For
+            // more details, see the Navigation pattern on Android Design:
+            //
+            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+            //
+            navigateUpFromSameTask(this);
+            //navigateUpTo(new Intent(this, RecipeStepActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }*/
+
+
 }

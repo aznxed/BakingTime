@@ -8,12 +8,16 @@ public class RecipeObject{
     private String name;
     private Ingredient[] ingredients;
     private Step[] steps;
+    private String servings;
+    private String image;
 
-    public RecipeObject(String id, String name, Ingredient[] ingredients, Step[] steps){
+    public RecipeObject(String id, String name, Ingredient[] ingredients, Step[] steps, String servings, String image){
         this.id = id;
         this.name = name;
         this.ingredients = ingredients;
         this.steps = steps;
+        this.servings = servings;
+        this.image = image;
     }
 
     public String getId() {
@@ -30,6 +34,14 @@ public class RecipeObject{
 
     public Step[] getSteps() {
         return steps;
+    }
+
+    public String getServings() {
+        return servings;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     public static class Ingredient {

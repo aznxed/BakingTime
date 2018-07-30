@@ -45,8 +45,8 @@ public class RecyclerViewRecipeAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolders recyclerViewHolders, int position) {
-        recyclerViewHolders.recipeName.setTitle(recipes[position/2].getName());
-        RecipeObject.Ingredient[] ingredients = recipes[position/2].getIngredients();
+        recyclerViewHolders.recipeName.setTitle(recipes[position].getName());
+        RecipeObject.Ingredient[] ingredients = recipes[position].getIngredients();
         StringBuilder ingredientsList = new StringBuilder();
 
         for(RecipeObject.Ingredient ingredient: ingredients){
@@ -60,7 +60,7 @@ public class RecyclerViewRecipeAdapter extends RecyclerView.Adapter<RecyclerView
         }
 
         recyclerViewHolders.ingredients.setText(ingredientsList.toString());
-        Picasso.with(context).load(links[position/2]).error(R.drawable.ic_broken_image_black_24dp).into(recyclerViewHolders.recipeImage);
+        Picasso.with(context).load(links[position]).error(R.drawable.ic_broken_image_black_24dp).into(recyclerViewHolders.recipeImage);
 
     }
 
@@ -69,7 +69,7 @@ public class RecyclerViewRecipeAdapter extends RecyclerView.Adapter<RecyclerView
         if(recipes == null){
             return 0;
         }
-        return recipes.length*2;
+        return recipes.length;
     }
 
     class RecyclerViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {

@@ -14,8 +14,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.support.v7.app.ActionBar;
 
-import com.example.android.bakingtime.dummy.DummyContent;
-
 import java.util.List;
 
 /**
@@ -51,7 +49,6 @@ public class RecipeStepActivity extends AppCompatActivity {
 
         //Get Extra from Intent
         Intent intent = getIntent();
-        Log.d("Test", intent.toString());
         List<RecipeObject.Step> stepList = intent.getParcelableArrayListExtra("steps");
 
         if (findViewById(R.id.recipe_detail_container) != null) {
@@ -83,7 +80,7 @@ public class RecipeStepActivity extends AppCompatActivity {
                 RecipeObject.Step step = (RecipeObject.Step) view.getTag();
                 if (twoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putString(RecipeStepDetailFragment.ARG_ITEM_ID, step.getId());
+                    arguments.putParcelable(RecipeStepDetailFragment.ARG_ITEM_ID, step);
                     RecipeStepDetailFragment fragment = new RecipeStepDetailFragment();
                     fragment.setArguments(arguments);
                     parentActivity.getSupportFragmentManager().beginTransaction()
@@ -115,9 +112,12 @@ public class RecipeStepActivity extends AppCompatActivity {
             return new ViewHolder(view);
         }
 
+
+
         @Override
         public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-            holder.mIdView.setText(steps.get(position).getId());
+            String step = "STEP " + steps.get(position).getId();
+            holder.mIdView.setText(step);
             holder.mContentView.setText(steps.get(position).getShortDescription());
 
             holder.itemView.setTag(steps.get(position));

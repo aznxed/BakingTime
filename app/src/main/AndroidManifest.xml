@@ -23,6 +23,7 @@
             android:name=".RecipeStepActivity"
             android:label="@string/title_recipe_list"
             android:parentActivityName=".MainActivity"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -32,7 +33,8 @@
             android:name=".RecipeStepDetailActivity"
             android:label="@string/title_recipe_detail"
             android:parentActivityName=".RecipeStepActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:configChanges="orientation|screenSize|keyboardHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.bakingtime.RecipeStepActivity" />
