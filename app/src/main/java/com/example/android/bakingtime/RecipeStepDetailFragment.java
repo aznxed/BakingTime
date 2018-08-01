@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +58,7 @@ public class RecipeStepDetailFragment extends Fragment {
     private SimpleExoPlayer mExoPlayer;
     private PlayerView playerView;
     private ImageView errorImage;
+    private TextView longDescription;
     private boolean exoplayerFullscreen = false;
     private Dialog fullScreenDialog;
 
@@ -72,7 +74,7 @@ public class RecipeStepDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
 
-        ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mItem.getDescription());
+        ((TextView)rootView.findViewById(R.id.recipe_detail)).setText(mItem.getDescription());
         playerView = rootView.findViewById(R.id.video_view);
         errorImage = rootView.findViewById(R.id.error_image);
 

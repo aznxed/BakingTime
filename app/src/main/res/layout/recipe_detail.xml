@@ -9,34 +9,35 @@
         android:id="@+id/main_media_frame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="0.5">
 
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/error_image"
+            android:src="@drawable/ic_broken_image_black_24dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="230dp" />
     </FrameLayout>
 
-    <ImageView
-        android:id="@+id/error_image"
-        android:src="@drawable/ic_broken_image_black_24dp"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="230dp" />
-
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="0.5">
         <TextView
-
             android:id="@+id/recipe_detail"
-            style="?android:attr/textAppearanceLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp" />
-    </ScrollView>
+            android:padding="16dp"
+            android:textSize="24sp"
+            />
+    </android.support.v4.widget.NestedScrollView>
+
 
 </LinearLayout>
