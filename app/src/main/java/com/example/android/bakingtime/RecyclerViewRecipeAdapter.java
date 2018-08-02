@@ -3,6 +3,7 @@ package com.example.android.bakingtime;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,13 @@ public class RecyclerViewRecipeAdapter extends RecyclerView.Adapter<RecyclerView
         }
 
         recyclerViewHolders.ingredients.setText(ingredientsList.toString());
-        Picasso.with(context).load(links[position]).error(R.drawable.ic_broken_image_black_24dp).into(recyclerViewHolders.recipeImage);
+
+        if(!recipes[position].getImage().isEmpty()){
+            Picasso.with(context).load(recipes[position].getImage()).error(R.drawable.ic_broken_image_black_24dp).into(recyclerViewHolders.recipeImage);
+        }
+        else {
+            Picasso.with(context).load(links[position]).error(R.drawable.ic_broken_image_black_24dp).into(recyclerViewHolders.recipeImage);
+        }
 
     }
 

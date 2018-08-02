@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -11,10 +12,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v7.app.ActionBar;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * An activity representing a list of Recipes. This activity
@@ -26,10 +34,16 @@ import java.util.List;
  */
 public class RecipeStepActivity extends AppCompatActivity {
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.recipe_image) ImageView imageView;
+    @Nullable @BindView(R.id.recipe_detail_container) FrameLayout frameLayout;
+    @BindView(R.id.recipe_list) RecyclerView recyclerView;
+
+    private String[] links = {"https://www.recipeboy.com/wp-content/uploads/2016/09/No-Bake-Nutella-Pie.jpg",
+            "https://images-gmi-pmc.edge-generalmills.com/c95a0455-70d0-4667-bc17-acfaf2894210.jpg",
+            "https://d2gk7xgygi98cy.cloudfront.net/14-3-large.jpg",
+            "http://www.tennesseecheesecake.com/assets/images/TC%207-29-166281_10428_NYSTYLECHEESECAKE_CROP.jpg"};
+
     private boolean mTwoPane;
 
     @Override
@@ -37,34 +51,36 @@ public class RecipeStepActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_list);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
+        ButterKnife.bind(this);
+        //Get Extra from Intent
+        Intent intent = getIntent();
+        List<RecipeObject.Step> stepList = intent.getParcelableArrayListExtra(MainActivity.STEP_EXTRA);
+        String recipeName = intent.getStringExtra(MainActivity.NAME_EXTRA);
+        int index = intent.getIntExtra(MainActivity.INDEX_EXTRA, 0);
+        String imageLink = intent.getStringExtra(MainActivity.IMAGE_EXTRA);
 
         // Show the Up button in the action bar.
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(recipeName);
         }
 
-        //Get Extra from Intent
-        Intent intent = getIntent();
-        List<RecipeObject.Step> stepList = intent.getParcelableArrayListExtra("steps");
+        if(!imageLink.isEmpty()){
+            Picasso.with(this).load(imageLink).error(R.drawable.ic_broken_image_black_24dp).into(imageView);
+        }
+        else {
+            Picasso.with(this).load(links[index]).error(R.drawable.ic_broken_image_black_24dp).fit().into(imageView);
+        }
 
-        if (findViewById(R.id.recipe_detail_container) != null) {
+        if (frameLayout != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
             mTwoPane = true;
         }
 
-        View recyclerView = findViewById(R.id.recipe_list);
         assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView, stepList);
-    }
-
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView, List<RecipeObject.Step> stepList) {
         recyclerView.setAdapter(new StepViewAdapter(this, stepList, mTwoPane));
     }
 

@@ -58,10 +58,9 @@ public class RecipeStepDetailFragment extends Fragment {
     private SimpleExoPlayer mExoPlayer;
     private PlayerView playerView;
     private ImageView errorImage;
-    private TextView longDescription;
-    private boolean exoplayerFullscreen = false;
     private Dialog fullScreenDialog;
 
+    private boolean exoplayerFullscreen = false;
     private long playbackPosition;
     private int playbackWindow;
     private boolean playbackPlaying;
@@ -90,7 +89,9 @@ public class RecipeStepDetailFragment extends Fragment {
             mItem = getArguments().getParcelable(ARG_ITEM_ID);
 
             Toolbar appBarLayout = getActivity().findViewById(R.id.detail_toolbar);
-            appBarLayout.setTitle(mItem.getShortDescription());
+            if(appBarLayout != null){
+                appBarLayout.setTitle(mItem.getShortDescription());
+            }
         }
     }
 

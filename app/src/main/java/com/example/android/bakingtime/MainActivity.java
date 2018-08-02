@@ -1,6 +1,5 @@
 package com.example.android.bakingtime;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -9,13 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.TextView;
 
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+import com.example.android.bakingtime.data.RecipesViewModel;
 import com.example.android.bakingtime.utils.NetworkUtils;
 
 import java.util.ArrayList;
@@ -30,8 +30,13 @@ public class MainActivity extends AppCompatActivity
 
     @BindView(R.id.error_message) TextView errorText;
     @BindView(R.id.recycler_view) ShimmerRecyclerView recipeRecyclerView;
+    @BindView(R.id.toolbar) Toolbar toolbar;
     private RecyclerViewRecipeAdapter recyclerViewRecipeAdapter;
-    private RecyclerViewRecipeAdapter.ListItemClickListener listClickListener;
+
+    public static String STEP_EXTRA = "steps";
+    public static String IMAGE_EXTRA = "image";
+    public static String NAME_EXTRA = "name";
+    public static String INDEX_EXTRA = "index";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +45,18 @@ public class MainActivity extends AppCompatActivity
 
         //Bind the views
         ButterKnife.bind(this);
-        listClickListener = this;
-        recyclerViewRecipeAdapter = new RecyclerViewRecipeAdapter(this, listClickListener);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(getApplication().toString());
+
+        //Set up RecyclerView
+        recyclerViewRecipeAdapter = new RecyclerViewRecipeAdapter(this, this);
         recipeRecyclerView.showShimmerAdapter();
         recipeRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(calculateBestSpanCount(), StaggeredGridLayoutManager.VERTICAL));
         recipeRecyclerView.setAdapter(recyclerViewRecipeAdapter);
         recipeRecyclerView.setHasFixedSize(true);
 
+        //Retrieve recipes if the internet is connected
+        //Else show error
         if(NetworkUtils.isConnected(this)){
             RecipesViewModel viewModel = ViewModelProviders.of(this).get(RecipesViewModel.class);
             viewModel.getRecipes().observe(this, new Observer<RecipeObject[]>() {
@@ -63,6 +73,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //Calculate the best span for the screen
     private int calculateBestSpanCount() {
         Display display = getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -81,7 +92,10 @@ public class MainActivity extends AppCompatActivity
 
         //Put extras and start intent
         Intent recipeDetail = new Intent(this, RecipeStepActivity.class);
-        recipeDetail.putParcelableArrayListExtra("steps", (ArrayList)stepArray);
+        recipeDetail.putParcelableArrayListExtra(STEP_EXTRA, (ArrayList)stepArray);
+        recipeDetail.putExtra(INDEX_EXTRA, clickedItemIndex);
+        recipeDetail.putExtra(NAME_EXTRA, recipeObjects[clickedItemIndex].getName());
+        recipeDetail.putExtra(IMAGE_EXTRA,  recipeObjects[clickedItemIndex].getImage());
         startActivity(recipeDetail);
     }
 }

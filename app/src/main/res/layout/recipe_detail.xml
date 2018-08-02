@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="52dp"
     android:orientation="vertical">
 
     <FrameLayout
@@ -15,7 +16,7 @@
             android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"/>
+            android:layout_gravity="fill"/>
 
         <ImageView
             android:id="@+id/error_image"

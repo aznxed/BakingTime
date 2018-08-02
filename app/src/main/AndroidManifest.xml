@@ -22,8 +22,8 @@
         <activity
             android:name=".RecipeStepActivity"
             android:label="@string/title_recipe_list"
-            android:parentActivityName=".MainActivity"
             android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -31,14 +31,24 @@
         </activity>
         <activity
             android:name=".RecipeStepDetailActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_recipe_detail"
             android:parentActivityName=".RecipeStepActivity"
-            android:theme="@style/AppTheme"
-            android:configChanges="orientation|screenSize|keyboardHidden">
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.bakingtime.RecipeStepActivity" />
         </activity>
+
+        <receiver android:name=".widget.BakingWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/baking_widget_info" />
+        </receiver>
     </application>
 
 </manifest>
