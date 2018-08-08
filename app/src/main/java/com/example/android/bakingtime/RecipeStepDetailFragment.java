@@ -1,39 +1,27 @@
 package com.example.android.bakingtime;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
+import com.example.android.bakingtime.utils.RecipeObject;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -59,7 +47,6 @@ public class RecipeStepDetailFragment extends Fragment {
     private PlayerView playerView;
     private ImageView errorImage;
     private Dialog fullScreenDialog;
-
     private boolean exoplayerFullscreen = false;
     private long playbackPosition;
     private int playbackWindow;
@@ -87,7 +74,6 @@ public class RecipeStepDetailFragment extends Fragment {
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             mItem = getArguments().getParcelable(ARG_ITEM_ID);
-
             Toolbar appBarLayout = getActivity().findViewById(R.id.detail_toolbar);
             if(appBarLayout != null){
                 appBarLayout.setTitle(mItem.getShortDescription());

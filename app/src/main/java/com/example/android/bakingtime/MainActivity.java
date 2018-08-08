@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.example.android.bakingtime.data.RecipesViewModel;
 import com.example.android.bakingtime.utils.NetworkUtils;
+import com.example.android.bakingtime.utils.RecipeObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity
     public static String IMAGE_EXTRA = "image";
     public static String NAME_EXTRA = "name";
     public static String INDEX_EXTRA = "index";
+    public static String ID_EXTRA = "id";
+    public static String INGREDIENTS_EXTRA = "ingredients";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +97,8 @@ public class MainActivity extends AppCompatActivity
         Intent recipeDetail = new Intent(this, RecipeStepActivity.class);
         recipeDetail.putParcelableArrayListExtra(STEP_EXTRA, (ArrayList)stepArray);
         recipeDetail.putExtra(INDEX_EXTRA, clickedItemIndex);
+        recipeDetail.putExtra(INGREDIENTS_EXTRA, recipeObjects[clickedItemIndex].getIngredientsString());
+        recipeDetail.putExtra(ID_EXTRA, recipeObjects[clickedItemIndex].getId());
         recipeDetail.putExtra(NAME_EXTRA, recipeObjects[clickedItemIndex].getName());
         recipeDetail.putExtra(IMAGE_EXTRA,  recipeObjects[clickedItemIndex].getImage());
         startActivity(recipeDetail);

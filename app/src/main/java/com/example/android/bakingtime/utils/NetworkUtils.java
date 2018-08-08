@@ -1,12 +1,10 @@
 package com.example.android.bakingtime.utils;
 
-import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 
-import com.example.android.bakingtime.RecipeObject;
 import com.google.gson.Gson;
 
 import java.io.IOException;

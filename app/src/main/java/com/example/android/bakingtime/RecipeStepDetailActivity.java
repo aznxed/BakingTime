@@ -1,17 +1,11 @@
 package com.example.android.bakingtime;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
-import android.view.MenuItem;
 
-import static android.support.v4.app.NavUtils.navigateUpFromSameTask;
+import com.example.android.bakingtime.utils.RecipeObject;
 
 /**
  * An activity representing a single Recipe detail screen. This
@@ -25,7 +19,7 @@ public class RecipeStepDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
+        Toolbar toolbar = findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
         // Show the Up button in the action bar.

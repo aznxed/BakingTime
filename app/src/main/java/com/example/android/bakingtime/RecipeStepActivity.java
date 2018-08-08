@@ -1,14 +1,21 @@
 package com.example.android.bakingtime;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +23,18 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v7.app.ActionBar;
+import android.widget.Toast;
 
+import com.example.android.bakingtime.data.RecipeContract;
+import com.example.android.bakingtime.utils.RecipeObject;
+import com.example.android.bakingtime.widget.BakingWidget;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * An activity representing a list of Recipes. This activity
@@ -38,6 +50,7 @@ public class RecipeStepActivity extends AppCompatActivity {
     @BindView(R.id.recipe_image) ImageView imageView;
     @Nullable @BindView(R.id.recipe_detail_container) FrameLayout frameLayout;
     @BindView(R.id.recipe_list) RecyclerView recyclerView;
+    @BindView(R.id.fab) FloatingActionButton favButton;
 
     private String[] links = {"https://www.recipeboy.com/wp-content/uploads/2016/09/No-Bake-Nutella-Pie.jpg",
             "https://images-gmi-pmc.edge-generalmills.com/c95a0455-70d0-4667-bc17-acfaf2894210.jpg",
@@ -67,11 +80,11 @@ public class RecipeStepActivity extends AppCompatActivity {
             actionBar.setTitle(recipeName);
         }
 
-        if(!imageLink.isEmpty()){
+        if(!TextUtils.isEmpty(imageLink)){
             Picasso.with(this).load(imageLink).error(R.drawable.ic_broken_image_black_24dp).into(imageView);
         }
         else {
-            Picasso.with(this).load(links[index]).error(R.drawable.ic_broken_image_black_24dp).fit().into(imageView);
+            Picasso.with(this).load(links[index]).error(R.drawable.ic_broken_image_black_24dp).fit().centerCrop().into(imageView);
         }
 
         if (frameLayout != null) {
@@ -79,10 +92,52 @@ public class RecipeStepActivity extends AppCompatActivity {
             // large-screen layouts (res/values-w900dp).
             mTwoPane = true;
         }
+        else {
+            for (Fragment fragment:getSupportFragmentManager().getFragments()) {
+                getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+            }
+        }
 
         assert recyclerView != null;
         recyclerView.setAdapter(new StepViewAdapter(this, stepList, mTwoPane));
     }
+
+    @OnClick(R.id.fab)
+    public void favClick(){
+
+        //Check if the recipe is already in the favorites
+        Intent intent = getIntent();
+        String selectionClause = RecipeContract.RecipeEntry.COLUMN_ID + " = ?";
+        String[] selectionArgs = {intent.getStringExtra(MainActivity.ID_EXTRA)};
+        Cursor cursor = this.getContentResolver().query(RecipeContract.RecipeEntry.CONTENT_URI, null, selectionClause, selectionArgs, null);
+
+        if(cursor.getCount() != 0){
+            int deleted = this.getContentResolver().delete(RecipeContract.RecipeEntry.CONTENT_URI, null, selectionArgs);
+            if(deleted != 0){
+                Toast.makeText(this, "Removed from Favorites", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else {
+            String ingredients = intent.getStringExtra(MainActivity.INGREDIENTS_EXTRA);
+            String recipeName = intent.getStringExtra(MainActivity.NAME_EXTRA);
+            ContentValues contentValues = new ContentValues();
+            // Put the task description and selected mPriority into the ContentValues
+            contentValues.put(RecipeContract.RecipeEntry.COLUMN_ID, selectionArgs[0]);
+            contentValues.put(RecipeContract.RecipeEntry.COLUMN_INGREDIENTS, ingredients);
+            contentValues.put(RecipeContract.RecipeEntry.COLUMN_NAME, recipeName);
+            Uri uri = this.getContentResolver().insert(RecipeContract.RecipeEntry.CONTENT_URI, contentValues);
+            if(uri != null) {
+                Toast.makeText(this, "Added to Favorites", Toast.LENGTH_SHORT).show();
+            }
+        }
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
+                new ComponentName(this, BakingWidget.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack_view);
+        cursor.close();
+    }
+
+
 
     public static class StepViewAdapter
             extends RecyclerView.Adapter<StepViewAdapter.ViewHolder> {
@@ -128,14 +183,11 @@ public class RecipeStepActivity extends AppCompatActivity {
             return new ViewHolder(view);
         }
 
-
-
         @Override
         public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
             String step = "STEP " + steps.get(position).getId();
             holder.mIdView.setText(step);
             holder.mContentView.setText(steps.get(position).getShortDescription());
-
             holder.itemView.setTag(steps.get(position));
             holder.itemView.setOnClickListener(onClickListener);
         }

@@ -49,6 +49,15 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/baking_widget_info" />
         </receiver>
+
+        <provider
+            android:name=".data.RecipeContentProvider"
+            android:authorities="com.example.android.bakingtime"
+            android:exported="true" />
+
+        <service android:name=".widget.BakingWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
     </application>
+
 
 </manifest>

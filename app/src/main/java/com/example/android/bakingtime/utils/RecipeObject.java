@@ -1,7 +1,8 @@
-package com.example.android.bakingtime;
+package com.example.android.bakingtime.utils;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 public class RecipeObject{
     private String id;
@@ -44,6 +45,14 @@ public class RecipeObject{
         return image;
     }
 
+    public String getIngredientsString(){
+        StringBuilder ingredientString = new StringBuilder();
+        for(Ingredient ingredient: this.ingredients){
+            ingredientString.append(ingredient.toString());
+        }
+        return ingredientString.toString();
+    }
+
     public static class Ingredient {
         private String quantity;
         private String measure;
@@ -65,6 +74,11 @@ public class RecipeObject{
 
         public String getMeasure() {
             return measure;
+        }
+
+        @Override
+        public String toString() {
+            return "- " + quantity + " " + measure + " " + ingredient + "\n";
         }
     }
 

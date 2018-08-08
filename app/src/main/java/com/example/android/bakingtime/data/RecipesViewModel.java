@@ -7,7 +7,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-import com.example.android.bakingtime.RecipeObject;
+import com.example.android.bakingtime.utils.RecipeObject;
 import com.example.android.bakingtime.utils.NetworkUtils;
 
 import java.io.IOException;
