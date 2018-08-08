@@ -2,17 +2,21 @@ package com.example.android.bakingtime;
 
 import android.app.Dialog;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.bakingtime.utils.RecipeObject;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -27,6 +31,8 @@ import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 
 /**
@@ -96,7 +102,7 @@ public class RecipeStepDetailFragment extends Fragment {
     private void initializePlayer(Bundle savedInstanceState){
         Uri uri;
 
-        if(!mItem.getVideoURL().isEmpty()){
+        if(!TextUtils.isEmpty(mItem.getVideoURL())){
             uri = Uri.parse(mItem.getVideoURL());
         }
         else {
@@ -119,6 +125,25 @@ public class RecipeStepDetailFragment extends Fragment {
                 getContext(), userAgent)).createMediaSource(uri);
 
         playerView.setPlayer(mExoPlayer);
+        if(!TextUtils.isEmpty(mItem.getThumbnailURL())){
+            Picasso.with(getContext()).load(mItem.getThumbnailURL()).into(new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    playerView.setDefaultArtwork(bitmap);
+                }
+
+                @Override
+                public void onBitmapFailed(Drawable errorDrawable) {
+
+                }
+
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                }
+            });
+        }
+
         mExoPlayer.prepare(mediaSource);
 
         if(savedInstanceState == null){
@@ -134,8 +159,8 @@ public class RecipeStepDetailFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
+        super.onStop();
 
         //Release Player
         if(mExoPlayer != null){
